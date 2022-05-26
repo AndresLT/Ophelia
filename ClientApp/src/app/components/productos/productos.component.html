@@ -19,15 +19,7 @@
     </dxi-column>
     <dxi-column dataField="nombre" caption="Nombre"></dxi-column>
     <dxi-column dataField="inventario" caption="Inventario"></dxi-column>
-  <!-- <dxi-column
-    dataField="OrderDate"
-    alignment="right"
-    dataType="date"
-    [width]="120"
-    [calculateFilterExpression]="calculateFilterExpression"
-  >
-    <dxo-header-filter [dataSource]="orderHeaderFilter"></dxo-header-filter>
-  </dxi-column> -->
+  
   <dxi-column
     dataField="valor"
     alignment="right"
@@ -35,11 +27,5 @@
     [editorOptions]="{ format: 'currency', showClearButton: true }"
     caption="Valor"
   >
-    <!-- <dxo-header-filter
-      [dataSource]="saleAmountHeaderFilter"
-    ></dxo-header-filter> -->
   </dxi-column>
-  <!-- <dxi-column dataField="CustomerStoreCity" caption="City">
-    <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
-  </dxi-column> -->
 </dx-data-grid>

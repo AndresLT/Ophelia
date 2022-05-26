@@ -34,14 +34,11 @@ export class FacturacionComponent implements OnInit {
     this.getFacturas()
     this.getProductos()
     this.getClientes()
-    // this.inicializarValores()
   }
 
   getFacturas(){
     this.facturacionServ.getFacturas().subscribe((res: any) => {
       this.facturas = res.facturas
-      console.log('Facturas', this.facturas);
-      
     })
   }
 
@@ -89,18 +86,13 @@ export class FacturacionComponent implements OnInit {
 
   finalizarFactura(){
     Swal.showLoading()
-    console.log('Datos iniciales',this.facturaCliente);
     if(this.factura.valor>0){
       if(this.facturaCliente.Cliente){
 
         let cliente = new Cliente 
         cliente = this.clientes.find(cliente => cliente.nombre == this.facturaCliente.Cliente)
         this.factura.idCliente = cliente.id
-        console.log('Factura final',this.factura);
         this.facturacionServ.crearFactura(this.factura).subscribe((res: any) =>{
-          
-          console.log('res',res);
-          
         })
         this.getFacturas()
         this.llenarFactura()
@@ -130,7 +122,6 @@ export class FacturacionComponent implements OnInit {
         this.detalleFactura.push(item)
       }
     })
-    console.log('Detalle de factura', this.detalleFactura);
     this.facturacionServ.crearDetalleFactura(this.detalleFactura).subscribe((res:any) => {
       Swal.fire({
         title: res.title,
@@ -142,7 +133,6 @@ export class FacturacionComponent implements OnInit {
         this.facturaCliente = new FacturaCliente;
         this.resetValores()
       }
-      console.log('res',res);
       
     })
     
