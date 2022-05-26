@@ -1,0 +1,49 @@
+<div class="list-container">
+    <dx-list [dataSource]="productos" [height]="400" [searchEnabled]="true" searchExpr="nombre" searchMode="contains"
+        [searchEditorOptions]="{placeholder:'Buscar'}">
+        <div *dxTemplate="let data of 'item'; let i = index" class="item-container">
+            <div class="info">
+                <div>{{ data.nombre }}</div>
+                <div>{{ data.valor | currency}}</div>
+            </div>
+            <div class="detalle">
+                <div class="cantidad">
+                    <dx-button stylingMode="text" icon="minus" (click)="quitarProducto(i)">
+                    </dx-button>
+                    <div>{{data.cantidadFactura}}</div>
+                    <dx-button stylingMode="text" icon="plus" (click)="agregarProducto(i)">
+                    </dx-button>
+                </div>
+                <div>{{ data.valorFactura | currency}}</div>
+            </div>
+        </div>
+    </dx-list>
+</div>
+<div class=factura>
+    <div class="section">
+        <dx-form id="form" [formData]="facturaCliente">
+            <dxi-item
+              dataField="Cliente"
+              editorType="dxSelectBox"
+              [editorOptions]="{ items: nombresClientes, searchEnabled: true, value: '' }"
+              [label]="'Cliente'"
+            >
+              <dxi-validation-rule
+                type="required"
+                message="Debes seleccionar un cliente."
+              ></dxi-validation-rule>
+            </dxi-item>
+        </dx-form>
+        <p>Valor total: {{factura.valor | currency}}</p>
+
+    </div>
+    <dx-button
+        style="align-self: flex-end;"
+        stylingMode="contained"
+        text="Finalizar compra"
+        type="default"
+        [width]="150"
+        (click)="finalizarFactura()"
+      >
+      </dx-button>
+</div>

@@ -1,0 +1,34 @@
+.item-container{
+    display: flex;
+}
+
+.detalle{
+    width: 240px;
+    display: flex;
+    margin-left: auto;
+    justify-content: space-between;
+    align-items: center;
+    gap:25px;
+}
+
+.cantidad{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.factura{
+    width: 100%;
+    height: 130px;
+    background-color: #e2e2e2;
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section{
+    display: flex;
+    justify-content: space-between;
+}
