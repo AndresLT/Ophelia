@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { DxButtonModule, DxDataGridModule, DxFormModule, DxListModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxFormModule, DxListModule, DxPopupModule, DxScrollViewModule, DxTemplateModule } from 'devextreme-angular';
 import { FacturacionComponent } from './components/facturacion/facturacion.component';
 import { ProductosComponent } from './components/productos/productos.component';
 import { FacturasComponent } from './components/facturas/facturas.component';
@@ -34,7 +34,10 @@ import { FacturasComponent } from './components/facturas/facturas.component';
     DxButtonModule,
     DxFormModule,
     DxListModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxPopupModule,
+    DxTemplateModule,
+    DxScrollViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]

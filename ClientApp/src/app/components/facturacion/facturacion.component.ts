@@ -140,10 +140,20 @@ export class FacturacionComponent implements OnInit {
       if(res.icon == "success"){
         this.detalleFactura = []
         this.facturaCliente = new FacturaCliente;
+        this.resetValores()
       }
       console.log('res',res);
       
     })
     
+  }
+
+  resetValores(){
+    for(let i = 0; i<this.productos.length; i++){
+      this.productos[i].cantidadFactura = 0
+      this.productos[i].valorFactura = 0
+    }
+    this.factura.valor = 0
+    this.facturaCliente.Cliente = ""
   }
 }

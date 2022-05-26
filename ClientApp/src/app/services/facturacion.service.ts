@@ -18,7 +18,11 @@ export class FacturacionService {
   }
 
   getDetalleFactura(idFactura: number){
-    return this.http.get(environment.apiUrl + "api/Facturacion/GetDetalleFactura/" + idFactura)
+    return this.http.post(environment.apiUrl + "api/Facturacion/GetDetalleFactura",idFactura)
+  }
+
+  getDetallesFacturas(){
+    return this.http.get(environment.apiUrl + "api/Facturacion/GetDetallesFacturas")
   }
 
   crearCliente(cliente: Cliente){

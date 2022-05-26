@@ -27,12 +27,19 @@ namespace Ophelia.Controllers
             return Json(new { facturas = cons });
         }
 
-        [HttpGet("{idFactura}")]
-        public ActionResult GetDetalleFactura(int idFactura)
+        [HttpPost]
+        public ActionResult GetDetalleFactura([FromBody] int idFactura)
         {
             var cons = _db.DetalleFacturas.Where(x => x.idFactura == idFactura).ToList();
 
             return Json(new { detalleFactura = cons });
+        }
+
+        [HttpGet]
+        public ActionResult GetDetallesFacturas()
+        {
+            var cons = _db.DetalleFacturas.ToList();
+            return Json(new { detallesFacturas = cons });
         }
 
         [HttpPost]
@@ -73,34 +80,69 @@ namespace Ophelia.Controllers
         [HttpPost]
         public ActionResult CrearDetalleFactura([FromBody] List<DetalleFactura> detalleFactura)
         {
-            foreach (DetalleFactura detalle in detalleFactura)
+            var ultimaFactura = _db.Facturas.OrderBy(x => x.id).LastOrDefault();
+            var detalles = _db.DetalleFacturas.Where(x => x.idFactura == ultimaFactura.id).ToList();
+            if(detalles.Count == 0)
             {
-                var cons = _db.Productos.Where(x => x.id == detalle.idProducto).FirstOrDefault();
-                var inventarioRestante = cons.inventario - detalle.cantidad;
-                if (inventarioRestante <= 5 && inventarioRestante > 0)
+                foreach (DetalleFactura detalle in detalleFactura)
                 {
-                    cons.inventario = inventarioRestante;
+                    var cons = _db.Productos.Where(x => x.id == detalle.idProducto).FirstOrDefault();
+                    var inventarioRestante = cons.inventario - detalle.cantidad;
+                    if (inventarioRestante <= 5 && inventarioRestante > 0)
+                    {
+                        cons.inventario = inventarioRestante;
 
-                    var ultimaFactura = _db.Facturas.LastOrDefault();
-                    detalle.idFactura = ultimaFactura.id;
-                    _db.DetalleFacturas.Add(detalle);
+                        detalle.idFactura = ultimaFactura.id;
+                        _db.DetalleFacturas.Add(detalle);
+                    }
+                    else if (inventarioRestante > 5)
+                    {
+                        cons.inventario = inventarioRestante;
+
+                        detalle.idFactura = ultimaFactura.id;
+                        _db.DetalleFacturas.Add(detalle);
+
+                    }
+                    else
+                    {
+                        var fact = _db.Facturas.OrderBy(x => x.id).LastOrDefault();
+                        _db.Facturas.Remove(fact);
+                        return Json(new { icon = "error", title = "Error al crear factura.", text = "El inventario no puede ser menor a 0." });
+
+                    }
                 }
-                else if (inventarioRestante > 5)
+
+            }
+            else
+            {
+                foreach (DetalleFactura detalle in detalleFactura)
                 {
-                    cons.inventario = inventarioRestante;
+                    var cons = _db.Productos.Where(x => x.id == detalle.idProducto).FirstOrDefault();
+                    var inventarioRestante = cons.inventario - detalle.cantidad;
+                    if (inventarioRestante <= 5 && inventarioRestante > 0)
+                    {
+                        cons.inventario = inventarioRestante;
 
-                    var ultimaFactura = _db.Facturas.OrderBy(x=>x.id).LastOrDefault();
-                    detalle.idFactura = ultimaFactura.id;
-                    _db.DetalleFacturas.Add(detalle);
+                        detalle.idFactura = ultimaFactura.id+1;
+                        _db.DetalleFacturas.Add(detalle);
+                    }
+                    else if (inventarioRestante > 5)
+                    {
+                        cons.inventario = inventarioRestante;
 
+                        detalle.idFactura = ultimaFactura.id+1;
+                        _db.DetalleFacturas.Add(detalle);
+
+                    }
+                    else
+                    {
+                        var fact = _db.Facturas.OrderBy(x => x.id).LastOrDefault();
+                        _db.Facturas.Remove(fact);
+                        return Json(new { icon = "error", title = "Error al crear factura.", text = "El inventario no puede ser menor a 0." });
+
+                    }
                 }
-                else
-                {
-                    var fact = _db.Facturas.OrderBy(x => x.id).LastOrDefault();
-                    _db.Facturas.Remove(fact);
-                    return Json(new { icon = "error", title = "Error al crear factura.", text = "El inventario no puede ser menor a 0." });
 
-                }
             }
             _db.SaveChanges();
             return Json(new { icon = "success", title="" , text = "Factura generada exitosamente." });

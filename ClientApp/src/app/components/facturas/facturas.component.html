@@ -1,52 +1,53 @@
-<dx-data-grid
-  id="gridContainer"
-  [dataSource]="facturas"
-  keyExpr="id"
-  [showBorders]="true"
->
-  <dxo-filter-row
-    [visible]="showFilterRow"
-    [applyFilter]="currentFilter"
-  ></dxo-filter-row>
-  <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
-  <dxo-search-panel
-    [visible]="true"
-    [width]="240"
-    placeholder="Search..."
-    ></dxo-search-panel>
+<div>
+
+  <dx-data-grid id="gridContainer" [dataSource]="facturas" keyExpr="id" [showBorders]="true" [focusedRowEnabled]="true"
+    [(focusedRowKey)]="idexFacturaSeleccionada"
+    (onFocusedRowChanged)="asignarDetalles($event)">
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-filter-row [visible]="showFilterRow" [applyFilter]="currentFilter"></dxo-filter-row>
+    <dxo-header-filter [visible]="showHeaderFilter"></dxo-header-filter>
+    <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
     <dxi-column dataField="id" [width]="140" caption="Factura N°">
-        <dxo-header-filter [groupInterval]="10000"></dxo-header-filter>
+      <dxo-header-filter [groupInterval]="10000"></dxo-header-filter>
     </dxi-column>
     <dxi-column dataField="idCliente" caption="Cliente" [calculateDisplayValue]="getNombre"></dxi-column>
-  <!-- <dxi-column
-    dataField="OrderDate"
-    alignment="right"
-    dataType="date"
-    [width]="120"
-    [calculateFilterExpression]="calculateFilterExpression"
-  >
-    <dxo-header-filter [dataSource]="orderHeaderFilter"></dxo-header-filter>
-  </dxi-column> -->
-  <dxi-column
-    dataField="fecha"
-    alignment="right"
-    dataType="datetime"
-    format="M/d/yyyy, HH:mm"
-    [width]="180"
-    caption="Fecha"
-  ></dxi-column>
-  <dxi-column
-    dataField="valor"
-    alignment="right"
-    format="currency"
-    [editorOptions]="{ format: 'currency', showClearButton: true }"
-    caption="Valor"
-  >
-    <!-- <dxo-header-filter
-      [dataSource]="saleAmountHeaderFilter"
-    ></dxo-header-filter> -->
-  </dxi-column>
-  <!-- <dxi-column dataField="CustomerStoreCity" caption="City">
-    <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
-  </dxi-column> -->
-</dx-data-grid>
+    <!-- <dxi-column
+      dataField="OrderDate"
+      alignment="right"
+      dataType="date"
+      [width]="120"
+      [calculateFilterExpression]="calculateFilterExpression"
+    >
+      <dxo-header-filter [dataSource]="orderHeaderFilter"></dxo-header-filter>
+    </dxi-column> -->
+    <dxi-column dataField="fecha" alignment="right" dataType="datetime" format="M/d/yyyy, HH:mm" [width]="180"
+      caption="Fecha"></dxi-column>
+    <dxi-column dataField="valor" alignment="right" format="currency"
+      [editorOptions]="{ format: 'currency', showClearButton: true }" caption="Valor">
+      <!-- <dxo-header-filter
+        [dataSource]="saleAmountHeaderFilter"
+      ></dxo-header-filter> -->
+    </dxi-column>
+    <dxi-column type="buttons" [width]="50">
+      <dxi-button hint="Ver detalles" icon="find"></dxi-button>
+    </dxi-column>
+    <!-- <dxi-column dataField="CustomerStoreCity" caption="City">
+      <dxo-header-filter [allowSearch]="true"></dxo-header-filter>
+    </dxi-column> -->
+  </dx-data-grid>
+  <dx-popup [width]="400" [height]="400" [showTitle]="true" title="Detalle de la factura" [dragEnabled]="false"
+    [closeOnOutsideClick]="true" [showCloseButton]="false" container=".dx-viewport" [(visible)]="popupVisible">
+    <dxi-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="closeButtonOptions">
+    </dxi-toolbar-item>
+    <div *dxTemplate="let data of 'content'">
+      <dx-scroll-view width="100%" height="100%">
+        <dx-data-grid id="gridContainer" [dataSource]="detalleFacturaSeleccionada" keyExpr="id"[showBorders]="true" [allowColumnResizing]="true">
+          <dxi-column dataField="idProducto" caption="Producto" [calculateDisplayValue]="getNombreProducto" [width]="200"></dxi-column>
+          <dxi-column dataField="cantidad" caption="Cant"></dxi-column>
+          <dxi-column dataField="valor" caption="Valor" format="currency" [width]="100"></dxi-column>
+        </dx-data-grid>
+
+      </dx-scroll-view>
+    </div>
+  </dx-popup>
+</div>
